@@ -1,4 +1,6 @@
 module 0x2::MyModule {
+//    use AptosFramework::TestCoin;
+
     struct MyCoin has key { value: u64 }
 
     public fun make_sure_non_zero_coin(coin: MyCoin): MyCoin {
@@ -28,11 +30,11 @@ module 0x2::MyModule {
         move_to(account, MyCoin{ value: 3 })
     }
 
-    #[test(a = @0x1, b = @0x2)]
+    #[test(a = @0x3, b = @0x2)]
     fun test_has_coin(a: signer, b: signer) {
         publish_coin(&a);
         publish_coin(&b);
-        assert!(has_coin(@0x1), 0);
+        assert!(has_coin(@0x3), 0);
         assert!(has_coin(@0x2), 1);
         // assert!(has_coin(@0x3), 1);
     }
@@ -41,5 +43,10 @@ module 0x2::MyModule {
     #[expected_failure(abort_code = 100)]
     fun test_non() {
         assert!(has_coin(@0x3), 100)
+    }
+
+    #[test_only]
+    fun see_test_coin() {
+//        assert!(TestCoin::exists_at(@0x2) == false, 0);
     }
 }

@@ -1,7 +1,6 @@
 address 0x42 {
 module Counter {
     use Std::Signer;
-    use Std::Debug;
 
     struct Counter has key { i: u64 }
 
@@ -35,6 +34,7 @@ module Counter {
 
     #[test(a = @0x1)]
     fun publish_ok(a: signer) acquires Counter {
+        use Std::Debug;
         publish(&a, 20);
         let k = get_count(@0x1);
         Debug::print(&k);
@@ -55,6 +55,7 @@ module Counter {
 
     #[test]
     fun exists_ok() {
+        use Std::Debug;
         let k = exist(@0x1);
         Debug::print(&k);
         assert!( k == false, 0);
@@ -62,6 +63,7 @@ module Counter {
 
     #[test(a = @0x2)]
     fun test_if_exist_ok(a: signer) acquires Counter{
+        use Std::Debug;
         let addr = @0x2;
         if (exist(addr)) {
             increment(addr)
